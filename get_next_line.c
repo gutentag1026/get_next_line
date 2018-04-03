@@ -12,7 +12,11 @@
 
 #include "get_next_line.h"
 
-char				*ft_strjoin_r(char *s1, char *s2)
+/* ft_strjoin joins strings of s1 and s2 by malloc s1 + s2 + 1 length's memory and
+copies everything to allocated memories s3 including the NULL.
+*/
+
+char				*ft_strjoin_r(char *s1, char *s2) 
 {
 	char			*tmp;
 
@@ -22,6 +26,9 @@ char				*ft_strjoin_r(char *s1, char *s2)
 	return (tmp);
 }
 
+/* ft_strnew(4) gives you a fresh string including null charaters like 00000, ft_strnew(0) gives you 0, 
+memalloc(1) gives you 0 without null. This function copies everything passed in to newly allocated str[];
+like abcdefg\n */
 char				*read_file(char *store)
 {
 	char			*str;
@@ -41,6 +48,11 @@ char				*read_file(char *store)
 	return (str);
 }
 
+/* this function copies everything after a line 
+for instance, abcd\nefg  it copies efg0 . But what it actually does is just to copy a null character after a line,
+so tht the next time get_next_line is called, ft_memalloc is no longer empty.
+*/
+
 char				*copy_after_line(char *tmp)
 {
 	char *str;
@@ -49,14 +61,22 @@ char				*copy_after_line(char *tmp)
 	free(tmp);
 	return (str);
 }
+/* The value of ulimit -n is 4864. 
 
+ft_strjoin_r get rid of the null characters between strings
+
+static char *store[FD_MAX] keeps tracks of characters read through last call to get_next_line, so it doesn't 
+lose the previous characters if there was no new line.so store[fd] is itself instead of ft_memalloc(1); 
+
+*line gets overwritten each time we call get_next_line
+*/
 int					get_next_line(const int fd, char **line)
 {
 	char			*buf;
 	static char		*store[FD_MAX];
 	int				res;
 
-	if (fd < 0 || fd >= FD_MAX || BUFF_SIZE < 1 || !line)
+	if (fd < 0 || fd >= FD_MAX || BUFF_SIZE < 1 || !line) 
 		return (-1);
 	buf = ft_memalloc(BUFF_SIZE + 1);
 	if ((res = (read(fd, buf, BUFF_SIZE))) == -1)
