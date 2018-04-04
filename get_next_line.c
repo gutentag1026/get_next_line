@@ -68,6 +68,7 @@ ft_strjoin_r get rid of the null characters between strings
 static char *store[FD_MAX] keeps tracks of characters read through last call to get_next_line, so it doesn't 
 lose the previous characters if there was no new line.so store[fd] is itself instead of ft_memalloc(1); 
 
+ft_strlen(store[fd]) == 0 indicates the end of fd.
 *line gets overwritten each time we call get_next_line
 */
 int					get_next_line(const int fd, char **line)
