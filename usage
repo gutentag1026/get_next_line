@@ -1,0 +1,5 @@
+first build the library by:
+make -C libft/
+then compile by:
+gcc -Wall -Wextra -Werror -I./libft/includes/ -L./libft -lft -o gnl get_next_line.c main.c
+then run ./gnl test.txt
